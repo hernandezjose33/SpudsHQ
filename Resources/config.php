@@ -27,7 +27,7 @@
     //echo __FILE__;
     
     //give the directory
-    echo TEMPLATE_BACK;
+    //echo TEMPLATE_BACK;
 
 
 
