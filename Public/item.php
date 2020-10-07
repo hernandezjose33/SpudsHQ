@@ -9,6 +9,17 @@
     <!-- Side Navigation -->
     <?php include(TEMPLATE_FRONT . DS . "side_nav.php") ?>
 
+    <?php 
+    
+    
+    $query = query(" SELECT * FROM products WHERE product_id = " . escape_string($_GET['id']) . " ");
+    confirm($query);
+    
+    while($row = fetch_array($query)):
+        
+    
+    
+    ?>
 
 <div class="col-md-9">
 
@@ -29,7 +40,7 @@
     <div class="caption-full">
         <h4><a href="#">Javascript Course</a> </h4>
         <hr>
-        <h4 class="">$24.99</h4>
+        <h4 class=""><?php echo "&#36;" . $row['product_price']; ?></h4>
 
     <div class="ratings">
      
@@ -194,7 +205,8 @@
 
 
 
-</div>
+</div><!-- col-md-9 end here -->
+<?php endwhile; ?>
 
 </div>
     <!-- /.container -->

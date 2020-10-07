@@ -36,7 +36,7 @@ function confirm($result){
 function escape_string($string){
     global $connection;
     
-    return mysqli_real_escape_string($connection. $string);
+    return mysqli_real_escape_string($connection, $string);
 }
 
 function fetch_array($result){
