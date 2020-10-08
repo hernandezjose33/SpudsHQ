@@ -7,7 +7,21 @@
 
 
 
+/************************** HELPER FUNCTIONS *****************************/
+function set_message($msg){
+    if(!empty($msg)){
+        $_SESSION['message'] = $msg;
+    }else{
+        $msg = "";
+    }
+}
 
+function display_message(){
+    if(isset($_SESSION['message'])){
+        echo $_SESSION['message'];
+        unset($_SESSION['message']);
+    }
+}
 
 //redirects when needed
 function redirect($location){
@@ -42,6 +56,8 @@ function escape_string($string){
 function fetch_array($result){
     return mysqli_fetch_array($result);
 }
+
+
 
 /************************** FRONT END FUNCTIONS *****************************/
 
@@ -106,6 +122,51 @@ function get_products_in_cat_page(){
         echo $product;
     }
 }
+
+function get_products_in_shop_page(){
+    $query = query(" SELECT * FROM products");
+    confirm($query);
+    
+    while($row = fetch_array($query)){
+        $product = <<<DELIMETER
+            <div class="col-md-3 col-sm-6 hero-feature">
+                <div class="thumbnail">
+                    <img src="{$row['product_image']}" alt="">
+                    <div class="caption">
+                        <h3>{$row['product_title']}</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Buy Now!</a> <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        DELIMETER;
+            
+        echo $product;
+    }
+}
+
+function login_user(){
+    
+    if(isset($_POST['submit'])){
+        $username = escape_string($_POST['user_name']);
+        $password = escape_string($_POST['password']);
+        
+        $query = query("SELECT * FROM users WHERE user_name = '{$username}' AND password = '{$password}'");
+        confirm($query);
+        
+        if(mysqli_num_rows($query) == 0){
+            set_message("Your PW or User is wrong!");
+            redirect("login.php");
+        }
+        else{
+            redirect("admin");
+        }
+    }
+    
+}
+
 
 
 
