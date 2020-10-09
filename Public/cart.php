@@ -16,7 +16,7 @@
                 $_SESSION['product_' . $_GET['add']] += 1;
                 redirect("checkout.php");
             }else{
-                set_message("We only have " . $row['product_quantity'] . " available!");
+                set_message("We only have " . $row['product_quantity'] . " " . $row['product_title'] . " available!");
                 redirect("checkout.php");
             }
         }
