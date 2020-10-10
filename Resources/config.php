@@ -3,6 +3,8 @@
     ob_start();
 
     session_start();
+    //used for testing to reset the sessions
+    //session_destroy();
 
     //If defined then make null
     defined("DS") ? null : define("DS", DIRECTORY_SEPARATOR);
