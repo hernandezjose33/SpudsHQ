@@ -2,9 +2,13 @@
 
 <?php include(TEMPLATE_FRONT . DS . "header.php") ?>
 
-<?php echo $_SESSION['product_1'];  ?>
 
 
+<?php 
+    if(isset($_SESSION['product_1'])){
+        echo $_SESSION['product_1'];
+    }
+?>
 
 <!-- Page Content -->
 <div class="container">
@@ -33,7 +37,8 @@
                     <td>$23</td>
                     <td>3</td>
                     <td>2</td>
-
+                    <td><a href="cart.php?remove=1">Remove</a></td>
+                    <td><a href="cart.php?delete=1">Delete</a></td>
                 </tr>
             </tbody>
         </table>
