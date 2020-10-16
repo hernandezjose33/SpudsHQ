@@ -203,23 +203,24 @@ function send_message(){
 /************************** BACK END FUNCTIONS *****************************/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function display_orders(){
+    $query = query("SELECT * FROM orders");
+    confirm($query);
+    
+     while($row = fetch_array($query)){
+        $test = <<<DELIMETER
+            <tr>
+               <td>{$row['order_id']}</td>
+               <td>{$row['order_amount']}</td>
+               <td>{$row['order_transaction']}</td>
+               <td>{$row['order_currency']}</td>
+               <td>{$row['order_status']}</td>
+               <td><a class="btn btn-danger" href="../../Resources/Templates/Back/delete_order.php?id={$row['order_id']}"><span class="glyphicon glyphicon-remove"></span></a></td>
+            </tr>    
+        DELIMETER;
+         
+        echo $test;
+     }
+}
 
 ?>

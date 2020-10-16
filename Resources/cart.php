@@ -108,7 +108,7 @@
         }
     }
 
-    function report(){
+    function proccess_transaction(){
         if(isset($_GET['tx'])){
             $amount = $_GET['amt'];
             $currency = $_GET['cc'];
@@ -124,7 +124,7 @@
                         $length = strlen($name) - 8;
                         $id = substr($name, 8, $length);
                         
-                        $send_order = query("INSERT INTO orders (order_amount,order_transaction,order_status,order_currency) VALUES('{$amount}','{$currency}','{$transaction}','{$status}')");
+                        $send_order = query("INSERT INTO orders (order_amount, order_transaction, order_currency, order_status) VALUES('{$amount}', '{$transaction}', '{$currency}','{$status}')");
                         //gives the last inserter ID
                         $last_id = last_id();
                         confirm($send_order);

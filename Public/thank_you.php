@@ -4,7 +4,7 @@
 
 <!--//check the status of order and show the values-->
 <?php 
-    report();
+    proccess_transaction();
 ?>
 
 <!-- Page Content -->
