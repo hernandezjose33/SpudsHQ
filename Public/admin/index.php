@@ -41,6 +41,9 @@
                 if(isset($_GET['edit_product'])){
                     include(TEMPLATE_BACK . DS . "edit_product.php");
                 }
+                if(isset($_GET['users'])) {
+                    include(TEMPLATE_BACK . "/users.php");
+                }
                 
                 ?>
 

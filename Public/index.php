@@ -2,7 +2,6 @@
 
 <?php include(TEMPLATE_FRONT . "/header.php") ?>
 
-
     <!-- Page Content -->
     <div class="container">
 
