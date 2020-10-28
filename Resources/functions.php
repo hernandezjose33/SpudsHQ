@@ -421,5 +421,28 @@ function add_user(){
     }
 }
 
+/************************** ADMIN Reports *****************************/
+
+
+function get_reports(){
+    $query = query(" SELECT * FROM reports");
+    confirm($query);
+    
+    while($row = fetch_array($query)){
+        $report = <<<DELIMETER
+            <tr>
+                <td>{$row['report_id']}</td>
+                <td>{$row['product_id']}</td>
+                <td>{$row['order_id']}</td>
+                <td>{$row['product_price']}</td>
+                <td>{$row['product_title']}</td>
+                <td>{$row['product_quantity']}</td>
+                <td><a class="btn btn-danger" href="../../Resources/Templates/Back/delete_report.php?id={$row['report_id']}"><span class="glyphicon glyphicon-remove"></span></a></td>
+            </tr>
+        DELIMETER;
+            
+        echo $report;
+    }
+}
 
 ?>
