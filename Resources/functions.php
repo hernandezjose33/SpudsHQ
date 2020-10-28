@@ -75,7 +75,78 @@ function get_products(){
     $query = query(" SELECT * FROM products");
     confirm($query);
     
-    while($row = fetch_array($query)){
+    //counts the number of rows
+    $rows = mysqli_num_rows($query);
+    
+    if(isset($_GET['page'])){
+        //replace anything that is not a number with an empty string
+        $page = preg_replace('#[^0-9]#', '', $_GET['page']);
+    } else{
+        $page = 1;
+    }
+    
+    //number of products per page
+    $perPage = 3;
+    
+    //the last page and add a ceiling to avoid any floats 
+    $lastPage = ceil($rows / $perPage);
+    
+    //conditions to not allow thw page to go over or bellow the number of pages 
+    if($page < 1){
+        $page = 1;
+    } elseif($page > $lastPage){
+        $page = $lastPage;
+    }
+    
+    //Middle number counters
+    $middleNumbers = '';
+    $sub1 = $page - 1;
+    $sub2 = $page - 2;
+    $add1 = $page + 1;
+    $add2 = $page + 2;
+    
+    if($page == 1){
+        //get the active page #
+        $middleNumbers .= '<li class="page-item active"><a>' .$page. '</a></li>';
+        
+        //PHP_SELF is a global vaiable that has the current page(index)
+        $middleNumbers .= '<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$add1.'">' .$add1. '</a></li>';
+    } elseif($page == $lastPage){
+        $middleNumbers .= '<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$sub1.'">' .$sub1. '</a></li>';
+        $middleNumbers .= '<li class="page-item active"><a>' .$page. '</a></li>';
+    } elseif($page > 2 && $page < ($lastPage - 1)){
+        $middleNumbers .= '<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$sub2.'">' .$sub2. '</a></li>';
+        $middleNumbers .= '<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$sub1.'">' .$sub1. '</a></li>';
+        $middleNumbers .= '<li class="page-item active"><a>' .$page. '</a></li>';
+        $middleNumbers .= '<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$add1.'">' .$add1. '</a></li>';
+        $middleNumbers .= '<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$add2.'">' .$add2. '</a></li>';
+    } elseif($page > 1 && $page < $lastPage){
+        $middleNumbers .= '<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$sub1.'">' .$sub1. '</a></li>';
+        $middleNumbers .= '<li class="page-item active"><a>' .$page. '</a></li>';
+        $middleNumbers .= '<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$add1.'">' .$add1. '</a></li>';
+
+    }
+    //$limit will hole (Total number/where to start, How many are displayed); //echo $limit to see this
+    $limit = 'LIMIT ' . ($page-1) * $perPage . ',' . $perPage; 
+    
+    $query2 = query(" SELECT * FROM products {$limit}");
+    confirm($query2);
+    
+    $outputPagination = "";
+    
+    if($page != 1){
+        $prev = $page - 1;
+        $outputPagination .= '<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$prev.'">Back</a></li>';
+    }
+    
+    $outputPagination .= $middleNumbers;
+    
+    if($page != $lastPage){
+        $next = $page + 1;
+        $outputPagination .= '<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$next.'">Next</a></li>';
+    }
+         
+    while($row = fetch_array($query2)){
         $product_image = display_image($row['product_image']);
         $product = <<<DELIMETER
             <div class="col-sm-4 col-lg-4 col-md-4">
@@ -93,6 +164,11 @@ function get_products(){
         DELIMETER;
             
         echo $product;
+    }
+    echo "<div class='text-center'><ul class='pagination'>{$outputPagination}</ul></div>";
+    //displays current page out of how many total
+    if($lastPage != 1){
+        echo "Page $page of $lastPage";
     }
 }
 
